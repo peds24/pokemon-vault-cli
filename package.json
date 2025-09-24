@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.mjs",
-    "vault": "node src/tools/list.mjs"
+    "vault": "node src/tools/list.mjs",
+    "export": "node src/tools/export-csv.mjs",
+    "export:append": "node src/tools/export-append-csv.mjs"
+
   },
   "keywords": [],
   "author": "",

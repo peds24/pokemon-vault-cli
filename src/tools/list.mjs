@@ -1,21 +1,33 @@
 import { getDb } from '../lib/db.mjs';
 
+const term = process.argv[2]?.toLowerCase() ?? '';
 const db = getDb();
 
-const rows = db.prepare(`
-  SELECT id, name, number, setName, releaseDate, rarity
-  FROM cards
-  ORDER BY releaseDate ASC
-  LIMIT 20
-`).all();
+let rows;
+if (term) {
+  rows = db.prepare(`
+    SELECT id, name, number, setName, releaseDate, rarity, language
+    FROM cards
+    WHERE lower(name) LIKE ?
+    ORDER BY releaseDate ASC
+    LIMIT 50
+  `).all(`%${term}%`);
+} else {
+  rows = db.prepare(`
+    SELECT id, name, number, setName, releaseDate, rarity, language
+    FROM cards
+    ORDER BY releaseDate ASC
+    LIMIT 50
+  `).all();
+}
 
 if (rows.length === 0) {
-  console.log("Vault is empty.");
+  console.log(term ? `No cards found for "${term}".` : "Vault is empty.");
 } else {
-  console.log("Your Vault:");
+  console.log(term ? `Cards matching "${term}":` : "Your Vault:");
   rows.forEach((row, i) => {
     console.log(
-      `${i + 1}. ${row.name} — ${row.setName} — ${row.number} — ${row.releaseDate} — ${row.rarity}`
+      `${i + 1}. [${row.language}] ${row.name} — ${row.setName} — ${row.number} — ${row.releaseDate} — ${row.rarity}`
     );
   });
 }

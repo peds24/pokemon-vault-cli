@@ -1,4 +1,4 @@
-export function shapeCard(card) {
+export function shapeCard(card, language = 'eng') {
   return {
     id: card.id ?? '',
     name: card.name ?? '',
@@ -15,5 +15,6 @@ export function shapeCard(card) {
     smallImage: card.images?.small ?? '',
     largeImage: card.images?.large ?? '',
     tcgplayerUrl: card.tcgplayer?.url ?? '',
+    language
   };
 }
